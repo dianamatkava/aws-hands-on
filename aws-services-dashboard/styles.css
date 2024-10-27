@@ -91,3 +91,9 @@ figcaption {
   z-index: 1;
   background-color: #25222294;
 }
+
+.active::after {
+  border: 2px solid #f50;
+  top: 18px;
+  left: 28px;
+}
