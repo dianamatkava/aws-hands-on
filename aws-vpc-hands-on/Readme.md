@@ -5,28 +5,26 @@
 ### 1. **Create EC2 in Private Subnet**
 - Create private subnet.
 - Launch EC2 instance in the private subnet.
-- Ensure that the instance does not have internet access.
-- Ensure that you are unable to connect via SSH due to lack of internet access.
+- Ensure that the instance does not have internet access. (using tools like `nc`)
+- Ensure that you are unable to connect via SSH (using the key) due to lack of internet access.
 
 ---
 
 ## Public Subnets
 
 ### 2. **Create EC2 in Public Subnet**
-- Create private subnet and create and associating it with an Internet Gateway (IGW) and Routing Table
+- Create private subnet associating it with an Internet Gateway (IGW) and Routing Table
 - Launch EC2 instance in the public subnet.
 
 #### 2.1 **Connect Using Instance Connect**  
 - Connect to the instance using the AWS Console's Instance Connect feature.
 - Connect with SSH via Instance Connect.
 
-
 #### 2.2 **Connect Using SSH**  
 - SSH into the instance using the provided key pair:
 ```bash
 ssh -i "my-testing-key-ec2.pem" ec2-user@<public_host>
 ```
-- Successful SSH connection to the instance.
 
 #### 2.3 **Check Internet Connectivity**  
 - From the instance, test internet access using:
@@ -63,6 +61,8 @@ $ nc 18.156.136.162 8080
 
 ## Bastion Host
 
+Recap: A Bastion Host is an instance used to securely access instances in a private subnet by acting as a bridge, typically via SSH, without exposing private instances directly to the internet.
+
 - Create new EC2 instance in public subnet
 - Allow SSH access (SG) to Bastion Host
 - Allow SSH access (SG) of private instance from Bastion Host **private IP**
@@ -73,6 +73,8 @@ $ nc 18.156.136.162 8080
 ---
 
 ## NAT Gateway
+
+Recap: A NAT Gateway provides internet access to instances in a private subnet by routing traffic through a public subnet with internet access.
 
 - Create NAT in public subnet (that has routed IGW) 
 - Create Elastic IP and associated with NAT
