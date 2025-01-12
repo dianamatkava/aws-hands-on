@@ -5,27 +5,27 @@ This repo contains a collection of AWS hands-on assignments and checklists desig
 
 ## Table of Contents
 
-1. [Private Subnets](#private-subnets)  
-   1.1 [Create EC2 in Private Subnet](#create-ec2-in-private-subnet)
+1. [Private Subnets](./aws-vpc-hands-on#private-subnets)  
+   1.1 [Create EC2 in Private Subnet](./aws-vpc-hands-on#create-ec2-in-private-subnet)
 
-2. [Public Subnets](#public-subnets)  
-   2.1 [Create EC2 in Public Subnet](#create-ec2-in-public-subnet)  
-   2.2 [Connect Using Instance Connect](#connect-using-instance-connect)  
-   2.3 [Connect Using SSH](#connect-using-ssh)  
-   2.4 [Check Internet Connectivity](#check-internet-connectivity)  
-   2.5 [Verify Public Accessibility](#verify-public-accessibility)  
-   2.6 [Restrict Certain Ports in Security Group](#restrict-certain-ports-in-security-group)
+2. [Public Subnets](./aws-vpc-hands-on#public-subnets)  
+   2.1 [Create EC2 in Public Subnet](./aws-vpc-hands-on#create-ec2-in-public-subnet)  
+   2.2 [Connect Using Instance Connect](./aws-vpc-hands-on#connect-using-instance-connect)  
+   2.3 [Connect Using SSH](./aws-vpc-hands-on#connect-using-ssh)  
+   2.4 [Check Internet Connectivity](./aws-vpc-hands-on#check-internet-connectivity)  
+   2.5 [Verify Public Accessibility](./aws-vpc-hands-on#verify-public-accessibility)  
+   2.6 [Restrict Certain Ports in Security Group](./aws-vpc-hands-on#restrict-certain-ports-in-security-group)
 
-3. [Bastion Host](#bastion-host)
+3. [Bastion Host](./aws-vpc-hands-on#bastion-host)
 
-4. [NAT Gateway](#nat-gateway)
+4. [NAT Gateway](./aws-vpc-hands-on#nat-gateway)
 
-5. [Advanced Networking Features](#advanced-networking-features)  
-   5.1 [VPC Endpoint](#vpc-endpoint)  
-   5.2 [VPC Peering](#vpc-peering)  
-   5.3 [Transit VPN](#transit-vpn)  
-   5.4 [Egress-Only Internet Gateway](#egress-only-internet-gateway)
+5. [Advanced Networking Features](./aws-vpc-hands-on#advanced-networking-features)  
+   5.1 [VPC Endpoint](./aws-vpc-hands-on#vpc-endpoint)  
+   5.2 [VPC Peering](./aws-vpc-hands-on#vpc-peering)  
+   5.3 [Transit VPN](./aws-vpc-hands-on#transit-vpn)  
+   5.4 [Egress-Only Internet Gateway](./aws-vpc-hands-on#egress-only-internet-gateway)
 
-6. [Connect with Session Manager](#connect-with-session-manager)
+6. [Connect with Session Manager](./aws-vpc-hands-on#connect-with-session-manager)
 
 ---
