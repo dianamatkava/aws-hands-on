@@ -73,21 +73,27 @@ Expected output:
 
 ---
 
-## VPC Endpoint
+## Bastion Host
+
+- Create new EC2 instance in public subnet
+- Allow SSH access (SG) to Bastion Host
+- Allow SSH access (SG) of private instance from Bastion Host **private IP**
+- ✅ SSH to Bastion Host (through public IP or create Elastic IP)
+- ✅ SSH to private EC2 from Bastion Host
+- ✅ Check private EC2 has no Internet connection
+
+---
 
 ## NAT Gateway
-4. NAT Gateway
-- ✅ Create NAT in public subnet (that is IGW) 
-- ✅ Create Elastic IP 
+
+- Create NAT in public subnet (that has routed IGW) 
+- Create Elastic IP and associated with NAT
 - Route Elastic IP to the private subnet
-- Connect to the EC2 in private subnet and check connectivity
+- ✅Connect to the EC2 in private subnet and check internet connectivity of private EC2
 
-
-
-3. Create `my-testing-ec2_private_1` in private subnet_3
-   1. VPC Endpoint
-   2. VPC Peering
-   3. Transit VPN
-   
-   5. Connect with Session Manager
-   6. Connect with Bastion Host
+---
+## VPC Endpoint
+## VPC Peering
+## Transit VPN
+## Egress-only
+## Connect with Session Manager
