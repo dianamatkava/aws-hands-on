@@ -1,2 +1,4 @@
 .idea
 .DB_Store
+*.hcl
+*/.terraform

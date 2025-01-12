@@ -3,73 +3,61 @@
 ## Private Subnets
 
 ### 1. **Create EC2 in Private Subnet**
-   - **Action**: Create private subnet.
-   - **Action**: Launch EC2 instance in the private subnet.
-   - **Check**: Ensure that the instance does not have internet access.
-   - **Result**: Unable to connect via SSH due to lack of internet access. ✅
+- Create private subnet.
+- Launch EC2 instance in the private subnet.
+- Ensure that the instance does not have internet access.
+- Ensure that you are unable to connect via SSH due to lack of internet access.
 
 ---
 
 ## Public Subnets
 
 ### 2. **Create EC2 in Public Subnet**
-- **Action**: Create private subnet and create and associating it with an Internet Gateway (IGW) and Routing Table
-- **Action**: Launch EC2 instance in the public subnet.
+- Create private subnet and create and associating it with an Internet Gateway (IGW) and Routing Table
+- Launch EC2 instance in the public subnet.
 
-#### 2.1 **Check Internet Connectivity**  
-- **Action**: From the instance, test internet access using:
-  - `curl google.com`
-  - `ping google.com`
-- **Expected Outcome**: Both commands should return successful results, confirming internet access. ✅
+#### 2.1 **Connect Using Instance Connect**  
+- Connect to the instance using the AWS Console's Instance Connect feature.
+- Connect with SSH via Instance Connect.
 
-#### 2.2 **Connect Using Instance Connect**  
-- **Action**: Connect to the instance using the AWS Console's Instance Connect feature.
-- **Expected Outcome**: Successful SSH connection via Instance Connect. ✅
 
-#### 2.3 **Connect Using SSH**  
-- **Action**: SSH into the instance using the provided key pair:
+#### 2.2 **Connect Using SSH**  
+- SSH into the instance using the provided key pair:
 ```bash
 ssh -i "my-testing-key-ec2.pem" ec2-user@<public_host>
 ```
-- **Expected Outcome**: Successful SSH connection to the instance. ✅
+- Successful SSH connection to the instance.
+
+#### 2.3 **Check Internet Connectivity**  
+- From the instance, test internet access using:
+  - `curl google.com`
+  - `ping google.com`
+- Both commands should return successful results, confirming internet access.
+
 
 #### 2.4 **Verify Public Accessibility**  
-- **Action**: From a local machine, ping the public IP of the instance:
+- From a local machine, ping the public IP of the instance:
 ```bash
 ping 18.156.136.162
 ```
-- **Expected Outcome**: Instance should be accessible via the public IP. ✅
+- Instance should be accessible via the public IP.
 
-#### 2.5 **Restrict Security Group Ports**  
-- **Action**: Configure the instance's security group to allow only HTTP (80), HTTPS (443), and SSH (22).
-- **Expected Outcome**: The instance should only be accessible on these ports. ✅
-
-#### 2.6 **Verify Port Accessibility**
-- **Action**: Test port accessibility:
+#### 2.5 **Restrict certain Ports in Security Group**  
+- Configure the instance's security group to allow only HTTP (80), HTTPS (443), and SSH (22).
+- Run simple server on port 80
+- Test port accessibility from local:
 ```bash
-curl 18.156.136.162:80
-```
-Expected output:  
-```
-Current Datetime: 2025-01-05 10:49:00
-Host IP: 172.31.38.139
+$ curl 18.156.136.162:80
+# Current Datetime: 2025-01-05 10:49:00
+# Host IP: 172.31.38.139
+
+$ nc 18.156.136.162 22
+# SSH-2.0-OpenSSH_8.7
+
+$ nc 18.156.136.162 8080
+# -
 ```
 
-```bash
-nc 18.156.136.162 22
-```
-Expected output:  
-```
-SSH-2.0-OpenSSH_8.7
-```
-
-```bash
-nc 18.156.136.162 8080
-```
-Expected output:  
-```
--
-```
 
 ---
 
