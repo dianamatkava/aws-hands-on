@@ -26,18 +26,16 @@ ssh -i "my-testing-key-ec2.pem" ec2-user@<public_host>
 ```
 
 ### **Check Internet Connectivity**  
-- From the instance, test internet access using:
+- From the instance, test internet access using (Both commands should return successful results, confirming internet access.):
   - `curl google.com`
   - `ping google.com`
-- Both commands should return successful results, confirming internet access.
 
 
 ### **Verify Public Accessibility**  
-- From a local machine, ping the public IP of the instance:
+- From a local machine, ping the public IP of the instance (Instance should be accessible via the public IP.):
 ```bash
 ping 18.156.136.162
 ```
-- Instance should be accessible via the public IP.
 
 ### **Restrict certain Ports in Security Group**  
 - Configure the instance's security group to allow only HTTP (80), HTTPS (443), and SSH (22).
@@ -84,9 +82,9 @@ Recap: A Bastion Host is an instance used to securely access instances in a priv
 
 ---
 ## VPC Endpoint
+**Recap**: Provides access from AWS to AWS services through VPC
 ### VPC Interface Endpoint
 #### EC2 to EC2
-**Recap**: Provides access from AWS to AWS services through VPC
 - Create new EC2 instance in public subnet
 - Create new EC2 instance in private subnet
 - **Assert**: SSH to public EC2 and check that connection private EC2 no possible
