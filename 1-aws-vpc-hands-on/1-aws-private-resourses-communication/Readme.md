@@ -47,25 +47,39 @@
 - AWS Secrets Manager: accessing Secrets Manager privately within your VPC to keep sensitive information secure.
 
 
-### VPC Interface Endpoint: EC2 Instance Connect Endpoin)
-EC2 to EC2
+[//]: # (### VPC Interface Endpoint: EC2 Instance Connect Endpoin&#41;)
 
-**Recap**: A VPC Interface Endpoint (also known as PrivateLink).
+[//]: # (In this lab we will create a VPC Endpoint &#40;PrivateLink&#41; from expose secure direct connection &#40;without internet&#41; from public EC2 to private EC2. )
 
-#### Prerequisites
-- you have EC2 instance in public subnet (allow public IP)
-- you have EC2 instance in private subnet (allow public IP)
+[//]: # ()
+[//]: # (**Recap**: A VPC Interface Endpoint &#40;also known as PrivateLink&#41;.)
 
-#### Tasks
-- Ensure that both EC2 instances have inbound rules (in SG) allowing ICMP traffic (ping).
-- **Assert**: Check that connection private EC2 no possible using public IP `ping <public-ip-of-private-ec2>`
-- Create VPC Endpoint (`VPC>PrivateLink and Lattice>Endpoint`) type of _EC2 Instance Connect Endpoint_ (free of charge)
-- Select the VPC and subnet where your private EC2 resides
+[//]: # ()
+[//]: # (#### Prerequisites)
 
-#### Check
-- SSH to public EC2 through public IP.
-    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`
-- Check public EC2 has connection to private EC2 `ping <private-ip-of-private-ec2>`
+[//]: # (- you have EC2 instance in public subnet &#40;with public IP&#41; with it's owm SG)
+
+[//]: # (- you have EC2 instance in private subnet &#40;with public IP&#41; with it's owm SG)
+
+[//]: # ()
+[//]: # (#### Tasks)
+
+[//]: # (- Ensure that both EC2 instances have inbound rules &#40;in SG&#41; allowing ICMP traffic &#40;ping&#41;.)
+
+[//]: # (- **Assert**: Check that connection private EC2 no possible using public IP `ping <public-ip-of-private-ec2>`)
+
+[//]: # (- Create VPC Endpoint &#40;`VPC>PrivateLink and Lattice>Endpoint`&#41; type of _EC2 Instance Connect Endpoint_ &#40;free of charge&#41;)
+
+[//]: # (- Select the VPC and subnet where your private EC2 resides)
+
+[//]: # ()
+[//]: # (#### Check)
+
+[//]: # (- SSH to public EC2 through public IP.)
+
+[//]: # (    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`)
+
+[//]: # (- Check public EC2 has connection to private EC2 `ping <private-ip-of-private-ec2>`)
 
 
 ### VPC Interface Endpoint: AWS services
@@ -73,27 +87,36 @@ EC2 to EC2
 In this lab we will create a VPC Endpoint (PrivateLink) for AWS Secrets Manager to allow private EC2 instances to securely access secrets from Secrets Manager without needing public internet access.
 
 **Recap**: AWS Secrets Manager is a service for securely storing and managing sensitive information like API keys, database credentials, and other secrets.
+
 **Note**: AWS Secrets Manager is not free of charge:
 - Secrets Stored: $0.40 per confidential data unit per month
 - API Calls: $0.05 per 10,000 API calls.
 
 #### Prerequisites
-- you have EC2 instance in private subnet (allow public IP)
-- you have EC2 instance in public subnet which is also a Bastion Host to private EC2
+- you have EC2 instance in private subnet (with public IP) with it's owm SG
+- you have EC2 instance in public subnet which is also a Bastion Host to private EC2 with it's owm SG
+- IAM for both instances allows read access to AWS Secrets Manager
 
 #### Tasks
 - Create new dummy key value pair in AWS Secrets Manager (Other type of secret)
 - Create VPC Endpoint (`VPC>PrivateLink and Lattice>Endpoint`) type of _AWS Services_
 - Select desired service from drop down list `com.amazonaws.<your-region>.secretsmanager`
-- Select private subnet in which to create the endpoint
+- Select private subnet (where your private EC2 resides) in which to create the endpoint
+- Create and assign a security group (SG) to the VPC endpoint that allows inbound HTTPS traffic on port 443 from the **private EC2's SG**.
 
 #### Check
 - SSH to Bastion Host through public IP.
     - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`
-- Check public EC2 can not access secrets in AWS Secrets Manager
 - SSH to private EC2 from Bastion Host
   - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<private-ip>`
-
+- Check private EC2 has no access to internet
+  - `curl google.com`
+- Check private EC2 can access secrets in AWS Secrets Manager
+  - `aws secretsmanager get-secret-value --secret-id TEST_KEY  # returns key`
+- Check that connection is private
+  - `nslookup secretsmanager.eu-central-1.amazonaws.com  # returns private ip`
+- Remove VPC Endpoint and try to access the key from private EC2
+  - `aws secretsmanager get-secret-value --secret-id TEST_KEY  # no responce`
 
 ### VPC Gateway
 #### EC2 to S3
