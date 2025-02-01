@@ -101,8 +101,8 @@ In this lab we will create a VPC Endpoint (PrivateLink) for AWS Secrets Manager 
 - Create new dummy key value pair in AWS Secrets Manager (Other type of secret)
 - Create VPC Endpoint (`VPC>PrivateLink and Lattice>Endpoint`) type of _AWS Services_
 - Select desired service from drop down list `com.amazonaws.<your-region>.secretsmanager`
-- Select private subnet (where your private EC2 resides) in which to create the endpoint
-- Create and assign a security group (SG) to the VPC endpoint that allows inbound HTTPS traffic on port 443 from the **private EC2's SG**.
+- Select private subnet (should be the same where your private EC2 resides) in which to create the endpoint
+- Create and assign a new security group (SG) to the VPC endpoint that allows inbound HTTPS traffic on port 443 from the **private EC2's SG**.
 
 #### Check
 - SSH to Bastion Host through public IP.
@@ -121,6 +121,30 @@ In this lab we will create a VPC Endpoint (PrivateLink) for AWS Secrets Manager 
 ### VPC Gateway
 #### EC2 to S3
 Recap: Provide access from AWS to S3 and DynamoDB through VPC (without Private link and ENI)
+
+#### Prerequisites
+- you have EC2 instance in private subnet (with public IP) with it's owm SG
+- you have EC2 instance in public subnet which is also a Bastion Host to private EC2 with it's owm SG
+
+#### Tasks
+- Create new dummy S3 bucket
+- Add IAM for both instances to allow read access to private S3 bucket (block all public access)
+- **Assert**: Connect to the private EC2 through the Bastion Host:
+  - `aws s3 ls` # should fail due to the lack of internet access 
+- Create VPC Endpoint (`VPC>"PrivateLink and Lattice">Endpoint`) type of _AWS Services_
+- Select desired service from drop down list `com.amazonaws.<your-region>.s3 (Gateway)`
+- Select your VPC and private route table. VPC Endpoint Gateway will automatically update the private route table to direct S3 traffic to the VPC endpoint. (If it did not happened authomatically you will have to manually update it.)
+
+#### Check
+- SSH to Bastion Host through public IP.
+    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`
+- SSH to private EC2 from Bastion Host
+  - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<private-ip>`
+- Check private EC2 has no access to internet
+  - `curl google.com`
+- Check that instance can access S3 and return bucket list
+  - `aws s3 ls`
+
 
 
 ---
