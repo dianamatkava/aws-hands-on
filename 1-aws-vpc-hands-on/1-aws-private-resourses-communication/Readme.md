@@ -145,9 +145,25 @@ Recap: Provide access from AWS to S3 and DynamoDB through VPC (without Private l
 - Check that instance can access S3 and return bucket list
   - `aws s3 ls`
 
-
-
 ---
+
 ## VPC Peering
+**Recap**: VPC Peering allows you to connect two VPC using AWS network (within own or different AWS accounts and cross region), as if they were in the same network.  
+
+In the lab, you will securely connect from a Bastion Host (which is publicly accessible) to a private instance in a different VPC using VPC Peering. The private instance only has a private IP address, meaning it is not directly accessible from the internet. 
+
+#### Prerequisites
+- You should have at least 1 customer VPC and 1 default VPC available for the lab.
+- You have 1 instance in public subnet in any of VPC and 1 private instance in another VPC.
+
+#### Tasks 
+- Now as we have 2 instances in different VPC navigate to _VPC Dashboard > Virtual private cloud > Peering connections_ and create new Peering.
+- Select the requester (public instance) and accepter (private instance)
+- In private instance Security Group accept 22 connection for public instance from another VPC.
+- After that you may notice that peering is waiting for the acceptance, since peering is withing single account you can do it in action section.
+
+
+
+
 ## Transit VPN
 ## Connect with Session Manager
