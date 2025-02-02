@@ -14,7 +14,7 @@
 - SSH to Bastion Host (through public IP or create Elastic IP).
     - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<public-ip>`
 - SSH to private EC2 from Bastion Host
-  - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<private-ip>`
+  - `ssh -i "my-testing-key-private-ec2.pem" ec2-user@<private-ip>`
 - Check private EC2 has no other Internet connection `curl google.com`
 - Check that SSH connection from your local machine can not be established to EC2 in private subnet by its **public-ip**
 
@@ -106,9 +106,9 @@ In this lab we will create a VPC Endpoint (PrivateLink) for AWS Secrets Manager 
 
 #### Check
 - SSH to Bastion Host through public IP.
-    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`
+    - `ssh -i "key-for-bastion-host.pem" ec2-user@<public-ip>`
 - SSH to private EC2 from Bastion Host
-  - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<private-ip>`
+  - `ssh -i "my-testing-key-private-ec2.pem" ec2-user@<private-ip>`
 - Check private EC2 has no access to internet
   - `curl google.com`
 - Check private EC2 can access secrets in AWS Secrets Manager
@@ -137,9 +137,9 @@ Recap: Provide access from AWS to S3 and DynamoDB through VPC (without Private l
 
 #### Check
 - SSH to Bastion Host through public IP.
-    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`
+    - `ssh -i "key-for-bastion-host.pem" ec2-user@<public-ip>`
 - SSH to private EC2 from Bastion Host
-  - `ssh -i "my-testing-key-for-bastion-host.pem" ec2-user@<private-ip>`
+  - `ssh -i "my-testing-key-private-ec2.pem" ec2-user@<private-ip>`
 - Check private EC2 has no access to internet
   - `curl google.com`
 - Check that instance can access S3 and return bucket list
@@ -150,18 +150,25 @@ Recap: Provide access from AWS to S3 and DynamoDB through VPC (without Private l
 ## VPC Peering
 **Recap**: VPC Peering allows you to connect two VPC using AWS network (within own or different AWS accounts and cross region), as if they were in the same network.  
 
-In the lab, you will securely connect from a Bastion Host (which is publicly accessible) to a private instance in a different VPC using VPC Peering. The private instance only has a private IP address, meaning it is not directly accessible from the internet. 
+In this lab, you will securely connect from a Bastion Host (which is publicly accessible) to a private instance in a different VPC using VPC Peering. The private instance only has a private IP address, meaning it is not directly accessible from the internet. 
 
 #### Prerequisites
-- You should have at least 1 customer VPC and 1 default VPC available for the lab.
+- You should have at least 1 custom VPC and 1 default VPC available for the lab.
 - You have 1 instance in public subnet in any of VPC and 1 private instance in another VPC.
 
 #### Tasks 
-- Now as we have 2 instances in different VPC navigate to _VPC Dashboard > Virtual private cloud > Peering connections_ and create new Peering.
-- Select the requester (public instance) and accepter (private instance)
-- In private instance Security Group accept 22 connection for public instance from another VPC.
-- After that you may notice that peering is waiting for the acceptance, since peering is withing single account you can do it in action section.
+- Now, as we have two instances in different VPCs, navigate to VPC Dashboard > Virtual Private Cloud > Peering Connections and create a new Peering.
+- Select the requester (public instance) and accepter (private instance).
+- After that, you may notice that the peering is waiting for acceptance. Since the peering is within a single account, you can approve it in the Actions section.
+- Update the routing tables for both subnets in different VPCs (Destination: VPC CIDR, Target: Peering VPC you created).
+- Now, you will be able to allow SSH (port 22) access on your private instance from the Bastion Host in the other VPC by mapping to its Security Group (SG). (By default, AWS only displays SGs from the same VPC. To reference an SG from another VPC, you must manually type its SG ID, or alternatively, you can allow access by using the VPC CIDR block.)
 
+#### Check
+- SSH to Bastion Host through public IP.
+    - `ssh -i "key-for-bastion-host.pem" ec2-user@<public-ip>`
+- SSH to private EC2 in another VPC from Bastion Host
+  - `ssh -i "key-for-private-ec2-in-other-vpc.pem" ec2-user@<private-ip>`
+- Additionally, you can try to remove SSH access and check that connection refused.
 
 
 
