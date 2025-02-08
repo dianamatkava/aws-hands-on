@@ -1,5 +1,10 @@
 # VPS
 
+1. [VPC Subnets](Readme.md)
+   1. [Private Subnet](Readme.md#1-private-subnets)
+   2. [Public Subnets](Readme.md#2-public-subnets)
+   3. [Restrict Certain Ports, IPs](Readme.md#3-restrict-certain-ports-in-security-group-)
+
 ## 1. Private Subnets
 
 ### **Create EC2 in Private Subnet**

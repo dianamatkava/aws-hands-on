@@ -1,5 +1,15 @@
 # VPC Private Resources Communication
 
+1. [VPC Private Resources Communication](Readme.md)
+   1. [Bastion Host](Readme.md#bastion-host)
+   2. [NAT Gateway](Readme.md#nat-gateway)
+   3. [VPC Endpoint](Readme.md#vpc-endpoint)
+      1. [VPC Interface Endpoint: AWS services](Readme.md#vpc-interface-endpoint-aws-services)
+      2. [VPC Gateway: S3, DymamoDB](Readme.md#vpc-gateway)
+   4. [VPC Peering](Readme.md#vpc-peering)
+   5. [Additional Services](Readme.md#additional-services)
+
+
 ## Bastion Host
 
 **Recap**: A Bastion Host is an instance used to securely access instances in a private subnet by acting as a bridge, typically via SSH, without exposing private instances directly to the internet.
@@ -7,7 +17,7 @@
 #### Tasks
 - Create new EC2 instance in private subnet and allow public ip (in advanced network settings or attach Elastic IP later)
 - Create new EC2 instance in public subnet (from `0-aws-subnets` lab) and name as Bastion Host
-- Allow SSH access (in SG) to Bastion Host
+- Allow SSH access (in SG) to Bastion Host from your local IP.
 - Allow SSH access (in SG) of private instance from Bastion Host **private IP**
 
 #### Check
@@ -45,41 +55,6 @@
 - Amazon Kinesis: Private connections for Kinesis Data Streams and Firehose to handle data streaming securely within your VPC. 
 - AWS CloudWatch: Private access to CloudWatch logs, metrics, and alarms within the VPC, improving security.
 - AWS Secrets Manager: accessing Secrets Manager privately within your VPC to keep sensitive information secure.
-
-
-[//]: # (### VPC Interface Endpoint: EC2 Instance Connect Endpoin&#41;)
-
-[//]: # (In this lab we will create a VPC Endpoint &#40;PrivateLink&#41; from expose secure direct connection &#40;without internet&#41; from public EC2 to private EC2. )
-
-[//]: # ()
-[//]: # (**Recap**: A VPC Interface Endpoint &#40;also known as PrivateLink&#41;.)
-
-[//]: # ()
-[//]: # (#### Prerequisites)
-
-[//]: # (- you have EC2 instance in public subnet &#40;with public IP&#41; with it's owm SG)
-
-[//]: # (- you have EC2 instance in private subnet &#40;with public IP&#41; with it's owm SG)
-
-[//]: # ()
-[//]: # (#### Tasks)
-
-[//]: # (- Ensure that both EC2 instances have inbound rules &#40;in SG&#41; allowing ICMP traffic &#40;ping&#41;.)
-
-[//]: # (- **Assert**: Check that connection private EC2 no possible using public IP `ping <public-ip-of-private-ec2>`)
-
-[//]: # (- Create VPC Endpoint &#40;`VPC>PrivateLink and Lattice>Endpoint`&#41; type of _EC2 Instance Connect Endpoint_ &#40;free of charge&#41;)
-
-[//]: # (- Select the VPC and subnet where your private EC2 resides)
-
-[//]: # ()
-[//]: # (#### Check)
-
-[//]: # (- SSH to public EC2 through public IP.)
-
-[//]: # (    - `ssh -i "my-testing-key-for-public-ec2.pem" ec2-user@<public-ip>`)
-
-[//]: # (- Check public EC2 has connection to private EC2 `ping <private-ip-of-private-ec2>`)
 
 
 ### VPC Interface Endpoint: AWS services
@@ -171,6 +146,18 @@ In this lab, you will securely connect from a Bastion Host (which is publicly ac
 - Additionally, you can try to remove SSH access and check that connection refused.
 
 
+## Additional Services
+- **Transit Gateway**: *transitive peering connections for VPC, VPN and DX* (Direct Connect), For connecting multiple (thousands of) VPCs, especially in a hub-and-spoke model. Supports **transitive routing.** Suitable for complex, large-scale architectures.
+- **Transit Gateway: Site-to-Site VPN ECMP** (Equal-Cost Multi-Pathing) - allows AWS Transit Gateway to use multiple **VPN tunnels** for better performance leveraging ECMP routing strategy that **splits traffic** across multiple **VPN tunnels**, increasing **speed and redundancy**.
+- **Site-to-Site VPN**: connect on-premises network or another cloud environment to an Amazon VPC **over the public internet**
 
-## Transit VPN
-## Connect with Session Manager
+  Steps to set up Site-to-Site VPN: 
+  1. Create **Virtual Private Gateway (VGW)** 
+      - VPN concentrator on the AWS side of the VPN connection 
+      - VGW is created and attached to the VPC from which you want to create the Site-to-Site VPN connection
+      - Possibility to customize the ASN (Autonomous System Number)
+  2. Create **Customer Gateway (CGW)**:
+	- Software application or physical device on customer side of the VPN connection
+  3. Connect then two with  **Site-to-Site VPN Connection**
+- **VPN CloudHub** – low-cost hub-and-spoke *VPN model to connect your multiple sites*
+- **Egress-Only Internet Gateway** - NAT Gateway for IPv6
