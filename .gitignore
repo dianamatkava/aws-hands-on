@@ -2,3 +2,4 @@
 .DB_Store
 *.hcl
 */.terraform
+.env
